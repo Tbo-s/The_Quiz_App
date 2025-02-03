@@ -40,6 +40,7 @@ public class QuizActivity extends AppCompatActivity {
     Button buttonOpt2;
     Button buttonOpt3;
     List<Button> optButtons;
+    RadioGroup radioGroup;
     ImageView image;
 
     List<Pair<String, Integer>> images;
@@ -78,7 +79,8 @@ public class QuizActivity extends AppCompatActivity {
         correctName = options.get(answer).first;
         idCorrect = optButtons.get(answer).getId(); // the correct button
         Log.d("QUIZAPP", String.format("The correct answer: %d %s", idCorrect, correctName));
-        image.setBackgroundResource(options.get(answer).second);
+        image.setImageResource(options.get(answer).second);
+        radioGroup.clearCheck();
     }
 
     protected boolean wasCorrect() {
@@ -172,8 +174,8 @@ public class QuizActivity extends AppCompatActivity {
         optButtons.add(buttonOpt2);
         optButtons.add(buttonOpt3);
 
-        RadioGroup rg = findViewById(R.id.radioQuizAnsweres);
-        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        radioGroup = findViewById(R.id.radioQuizAnsweres);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 idCurrent = checkedId;

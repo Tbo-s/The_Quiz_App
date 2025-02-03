@@ -14,13 +14,16 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:contentDescription="image of a dog"
             android:maxHeight="120dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="0.5"
             android:orientation="vertical">
 
             <TextView
@@ -65,7 +68,7 @@
 
                 <Button
                     android:id="@+id/buttonQuizSubmit"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/submit" />
@@ -94,14 +97,17 @@
 
                 <Button
                     android:id="@+id/buttonQuizEnd"
+                    style="@style/Widget.AppCompat.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
                     android:text="@string/quiz_end" />
 
                 <Button
                     android:id="@+id/buttonQuizNext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
                     android:text="@string/next" />
             </LinearLayout>
 

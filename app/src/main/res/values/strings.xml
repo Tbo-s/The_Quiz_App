@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">TheQuizApp</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="submit">Submit</string>
+    <string name="correct">Correct!</string>
+    <string name="incorrect">Incorrect. The correct answer was %1$s</string>
+    <string name="quiz_end">End quiz</string>
+    <string name="quiz_task">Choose the name corresponding to the picture.</string>
+    <string name="quiz_score">Score: %1$d/%2$d (%3$s)</string>
+
 </resources>

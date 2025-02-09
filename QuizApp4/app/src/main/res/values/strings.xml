@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">QuizApp4</string>
-    <string name="quiz_task">Wat is de juiste naam?</string>
+    <string name="quiz_task">What is the correct name?</string>
     <string name="submit">Submit</string>
     <string name="quiz_score">Score: %1$d/%2$d (%3$s)</string>
     <string name="correct">Correct!</string>
-    <string name="incorrect">Incorrect! Het juiste antwoord is: %1$s</string>
+    <string name="incorrect">Incorrect! the correct answer is: %1$s</string>
     <string name="quiz_end">End Quiz</string>
     <string name="next">Next</string>
 

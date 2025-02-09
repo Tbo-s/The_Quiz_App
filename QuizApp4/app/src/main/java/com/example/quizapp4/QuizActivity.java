@@ -22,7 +22,7 @@ import java.util.Random;
 
 public class QuizActivity extends AppCompatActivity {
 
-    // Score bijhouden
+    // Keep track of the score
     int answerTotal = 0;
     int answerCorrect = 0;
     Random rand = new Random();
@@ -30,7 +30,7 @@ public class QuizActivity extends AppCompatActivity {
     int idCorrect;
     int idCurrent;
 
-    // UI-elementen
+    // UI elements
     TextView textScore;
     TextView textResult;
     Button buttonSubmit;
@@ -43,7 +43,7 @@ public class QuizActivity extends AppCompatActivity {
     RadioGroup radioGroup;
     ImageView image;
 
-    // Lijst met quiz-items (door MainActivity meegegeven)
+    // List of quiz items (passed from MainActivity)
     ArrayList<gallerymodel> images;
 
     @Override
@@ -52,16 +52,16 @@ public class QuizActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_quiz);
 
-        // Zorg dat de content rekening houdt met de system insets (edge-to-edge)
+        // Ensure the content accounts for system insets (edge-to-edge)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Haal de lijst op die vanuit MainActivity is meegegeven
+        // Retrieve the list passed from MainActivity
         images = (ArrayList<gallerymodel>) getIntent().getSerializableExtra("galleryList");
-        // Indien de lijst ontbreekt of minder dan 3 items bevat, gebruik dan de fallback-lijst
+        // If the list is missing or contains fewer than 3 items, use the fallback list
         if (images == null || images.size() < 3) {
             images = new ArrayList<>();
             images.add(new gallerymodel("Aegon", R.drawable.eagon));
@@ -69,7 +69,7 @@ public class QuizActivity extends AppCompatActivity {
             images.add(new gallerymodel("Lia", R.drawable.lia));
         }
 
-        // Koppel de UI-elementen via findViewById
+        // Bind the UI elements using findViewById
         textScore = findViewById(R.id.textQuizScore);
         textResult = findViewById(R.id.textQuizResult);
         buttonEnd = findViewById(R.id.buttonQuizEnd);
@@ -81,13 +81,13 @@ public class QuizActivity extends AppCompatActivity {
         image = findViewById(R.id.imageView);
         radioGroup = findViewById(R.id.radioQuizAnsweres);
 
-        // Voeg de RadioButtons toe aan een lijst (zodat we later de correcte knop kunnen bepalen)
+        // Add the RadioButtons to a list (so we can later determine the correct button)
         optButtons = new ArrayList<>();
         optButtons.add(buttonOpt1);
         optButtons.add(buttonOpt2);
         optButtons.add(buttonOpt3);
 
-        // Luister naar veranderingen in de RadioGroup
+        // Listen for changes in the RadioGroup
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -95,7 +95,7 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
-        // Acties voor de knoppen
+        // Actions for the buttons
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,22 +121,22 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
-        // Start de quiz
+        // Start the quiz
         hideBeforeAnswer();
         generateQuestion();
     }
 
-    // Genereert een nieuwe vraag:
+    // Generates a new question:
     protected void generateQuestion() {
         int size = images.size();
-        if (size < 3) return; // Veiligheidscheck
+        if (size < 3) return; // Safety check
 
-        // 1. Kies willekeurig één item als de vraag (de foto die getoond wordt)
+        // 1. Randomly choose one item as the question (the photo to be shown)
         int correctIndex = rand.nextInt(size);
         gallerymodel correctItem = images.get(correctIndex);
         correctName = correctItem.getNameOfDog();
 
-        // 2. Kies twee afleiders (distractoren) die niet hetzelfde zijn als het correcte item
+        // 2. Choose two distractors that are not the same as the correct item
         int distractor1Index, distractor2Index;
         do {
             distractor1Index = rand.nextInt(size);
@@ -148,25 +148,25 @@ public class QuizActivity extends AppCompatActivity {
         String distractor1 = images.get(distractor1Index).getNameOfDog();
         String distractor2 = images.get(distractor2Index).getNameOfDog();
 
-        // 3. Maak een lijst met opties: de correcte naam en de twee distractoren
+        // 3. Create a list of options: the correct name and the two distractors
         ArrayList<String> options = new ArrayList<>();
         options.add(correctName);
         options.add(distractor1);
         options.add(distractor2);
 
-        // Schud de opties zodat de correcte niet altijd op dezelfde plek staat
+        // Shuffle the options so that the correct one is not always in the same position
         Collections.shuffle(options);
 
-        // 4. Wijs de opties toe aan de RadioButtons
+        // 4. Assign the options to the RadioButtons
         buttonOpt1.setText(options.get(0));
         buttonOpt2.setText(options.get(1));
         buttonOpt3.setText(options.get(2));
 
-        // 5. Bepaal welke RadioButton de correcte optie bevat
+        // 5. Determine which RadioButton contains the correct option
         int correctOptionIndex = options.indexOf(correctName);
         idCorrect = optButtons.get(correctOptionIndex).getId();
 
-        // 6. Toon de foto van het correcte item
+        // 6. Display the photo of the correct item
         Uri uri = correctItem.getImageUri();
         if (uri != null) {
             image.setImageURI(uri);
@@ -174,16 +174,16 @@ public class QuizActivity extends AppCompatActivity {
             image.setImageResource(correctItem.getImageResource());
         }
 
-        // Zorg dat er geen vooraf geselecteerd antwoord is
+        // Ensure that no answer is pre-selected
         radioGroup.clearCheck();
     }
 
-    // Controleert of het gekozen antwoord correct is
+    // Checks whether the chosen answer is correct
     protected boolean wasCorrect() {
         return idCorrect == idCurrent;
     }
 
-    // Werkt de score bij en toont een resultaatbericht
+    // Updates the score and displays a result message
     protected void updateScore() {
         answerTotal++;
         if (wasCorrect()) {
@@ -196,7 +196,7 @@ public class QuizActivity extends AppCompatActivity {
         textScore.setText(getString(R.string.quiz_score, answerCorrect, answerTotal, percentage));
     }
 
-    // Verbergt elementen vóór het beantwoorden
+    // Hides elements before an answer is given
     protected void hideBeforeAnswer() {
         textResult.setVisibility(View.INVISIBLE);
         buttonEnd.setVisibility(View.INVISIBLE);
@@ -204,7 +204,7 @@ public class QuizActivity extends AppCompatActivity {
         buttonSubmit.setVisibility(View.VISIBLE);
     }
 
-    // Toont elementen nadat een antwoord is gegeven
+    // Shows elements after an answer is given
     protected void showAfterAnswer() {
         textResult.setVisibility(View.VISIBLE);
         buttonEnd.setVisibility(View.VISIBLE);

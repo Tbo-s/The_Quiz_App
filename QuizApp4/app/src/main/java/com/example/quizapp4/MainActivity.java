@@ -31,19 +31,19 @@ import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Lijst met bestaande en door de gebruiker toegevoegde items
+    // List of existing and user-added items
     ArrayList<gallerymodel> galleryModels = new ArrayList<>();
 
-    // Vooraf gedefinieerde drawable afbeeldingen
+    // Predefined drawable images
     int[] dogImages = {R.drawable.eagon, R.drawable.hank, R.drawable.lia};
 
     Button btnPickImage;
     Button sortButton;
-    Button quizButton; // Knop om naar de quiz te gaan
+    Button quizButton; // Button to go to the quiz
     Dog_recyclerviewadapter adapter;
     ActivityResultLauncher<Intent> resultLauncher;
 
-    // Boolean om de sorteerorde bij te houden: true = A-Z, false = Z-A
+    // Boolean to track the sorting order: true = A-Z, false = Z-A
     boolean sortAscending = true;
 
     @Override
@@ -52,36 +52,36 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        // Zorg dat de system insets correct worden ingesteld
+        // Ensure that the system insets are set correctly
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Vind de RecyclerView en de knoppen in de layout
+        // Find the RecyclerView and the buttons in the layout
         RecyclerView recyclerView = findViewById(R.id.rycyclerview);
         btnPickImage = findViewById(R.id.btnPickImage);
         sortButton = findViewById(R.id.Sortbutton);
         quizButton = findViewById(R.id.Quizbutton);
 
-        // Voeg de vooraf gedefinieerde items toe
+        // Add the predefined items
         setUpgalleryModels();
 
-        // Maak en stel de adapter in
+        // Create and set up the adapter
         adapter = new Dog_recyclerviewadapter(this, galleryModels);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Registreer de ActivityResultLauncher voor het ophalen van afbeeldingen
+        // Register the ActivityResultLauncher to retrieve images
         registerResult();
 
-        // Kliklistener voor de knop om een afbeelding te kiezen
+        // Click listener for the button to pick an image
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             btnPickImage.setOnClickListener(view -> pickImage());
         }
 
-        // Kliklistener voor de sorteer-knop: togglet tussen A-Z en Z-A
+        // Click listener for the sort button: toggles between A-Z and Z-A
         sortButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,19 +89,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Kliklistener voor de quiz-knop: start QuizActivity en geef de volledige lijst mee
+        // Click listener for the quiz button: starts QuizActivity and passes the full list
         quizButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent quizIntent = new Intent(MainActivity.this, QuizActivity.class);
-                // De klasse gallerymodel moet Serializable implementeren!
+                // The gallerymodel class must implement Serializable!
                 quizIntent.putExtra("galleryList", galleryModels);
                 startActivity(quizIntent);
             }
         });
     }
 
-    // Sorteert de lijst op basis van de huidige sorteerorde en togglet daarna de boolean
+    // Sorts the list based on the current sorting order and then toggles the boolean
     private void sortGalleryModels() {
         if (sortAscending) {
             Collections.sort(galleryModels, new Comparator<gallerymodel>() {
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-        // Toggle de sorteerorde voor de volgende keer
+        // Toggle the sorting order for the next time
         sortAscending = !sortAscending;
         adapter.notifyDataSetChanged();
     }
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         resultLauncher.launch(intent);
     }
 
-    // Voeg de vooraf gedefinieerde items toe aan de lijst
+    // Adds the predefined items to the list
     private void setUpgalleryModels() {
         String[] dogNames = getResources().getStringArray(R.array.Dog_full_names);
         for (int i = 0; i < dogNames.length; i++) {
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Registreer de ActivityResultLauncher om het resultaat van de afbeeldingkeuze op te vangen
+    // Registers the ActivityResultLauncher to receive the result of the image selection
     private void registerResult() {
         resultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -148,36 +148,36 @@ public class MainActivity extends AppCompatActivity {
                             Uri imageUri = result.getData().getData();
                             showNameDialog(imageUri);
                         } catch (Exception e) {
-                            Toast.makeText(MainActivity.this, "Geen afbeelding geselecteerd", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "No image selected", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
         );
     }
 
-    // Laat een dialoog zien waarin de gebruiker een naam kan ingeven voor de foto
+    // Shows a dialog where the user can enter a name for the image
     private void showNameDialog(Uri imageUri) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("Voer een naam in voor de foto");
+        builder.setTitle("Enter a name for the image");
 
         final EditText input = new EditText(MainActivity.this);
-        input.setHint("Naam");
+        input.setHint("Name");
         builder.setView(input);
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String naam = input.getText().toString().trim();
-                if (!naam.isEmpty()) {
-                    galleryModels.add(new gallerymodel(naam, imageUri));
+                String name = input.getText().toString().trim();
+                if (!name.isEmpty()) {
+                    galleryModels.add(new gallerymodel(name, imageUri));
                     adapter.notifyItemInserted(galleryModels.size() - 1);
                 } else {
-                    Toast.makeText(MainActivity.this, "Naam mag niet leeg zijn", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Name must not be empty", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        builder.setNegativeButton("Annuleren", null);
+        builder.setNegativeButton("Cancel", null);
         builder.show();
     }
 }

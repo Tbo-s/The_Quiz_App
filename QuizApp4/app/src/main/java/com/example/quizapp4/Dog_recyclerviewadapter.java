@@ -27,7 +27,7 @@ public class Dog_recyclerviewadapter extends RecyclerView.Adapter<Dog_recyclervi
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflate de layout voor de rij in de RecyclerView
+        // Inflate the layout for the row in the RecyclerView
         View view = LayoutInflater.from(context).inflate(R.layout.recycler_view_row, parent, false);
         return new MyViewHolder(view);
     }
@@ -37,20 +37,20 @@ public class Dog_recyclerviewadapter extends RecyclerView.Adapter<Dog_recyclervi
         gallerymodel item = gallerymodels.get(position);
         holder.textViewName.setText(item.getNameOfDog());
 
-        // Controleer of er een URI aanwezig is; zo niet, gebruik de drawable resource.
+        // Check if a URI is available; if not, use the drawable resource.
         if (item.getImageUri() != null) {
             holder.imageView.setImageURI(item.getImageUri());
         } else {
             holder.imageView.setImageResource(item.getImageResource());
         }
 
-        // Stel een clicklistener in op de delete-knop om het item te verwijderen
+        // Set a click listener on the delete button to remove the item.
         holder.buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int currentPosition = holder.getAdapterPosition();
                 if (currentPosition != RecyclerView.NO_POSITION) {
-                    // Verwijder het item uit de lijst en update de adapter
+                    // Remove the item from the list and update the adapter.
                     gallerymodels.remove(currentPosition);
                     notifyItemRemoved(currentPosition);
                     notifyItemRangeChanged(currentPosition, gallerymodels.size());
@@ -64,7 +64,7 @@ public class Dog_recyclerviewadapter extends RecyclerView.Adapter<Dog_recyclervi
         return gallerymodels.size();
     }
 
-    // ViewHolder-klasse om de rij-layout te beheren
+    // ViewHolder class to manage the row layout.
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView textViewName;

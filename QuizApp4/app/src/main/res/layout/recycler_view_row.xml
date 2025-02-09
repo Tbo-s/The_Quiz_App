@@ -13,24 +13,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:cardBackgroundColor="@color/blueBlack"
         app:cardCornerRadius="20dp"
+        android:layout_margin="2dp"
         app:cardElevation="8dp"
         app:layout_constraintTop_toTopOf="parent">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:padding="5dp"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/innerCard"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textView"
-                app:srcCompat="@drawable/eagon" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_margin="8dp">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/eagon" />
+            </androidx.cardview.widget.CardView>
+
 
 
 
@@ -48,14 +57,22 @@
 
             <Button
                 android:id="@+id/buttondelete"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
+                android:backgroundTint="@color/red"
                 android:text="-"
-                android:textSize="50sp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="10sp"
+                android:autoSizeMaxTextSize="50sp"
+                android:autoSizeStepGranularity="1sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

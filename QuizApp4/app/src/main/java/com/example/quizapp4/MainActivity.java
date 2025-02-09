@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     Dog_recyclerviewadapter adapter;
     ActivityResultLauncher<Intent> resultLauncher;
 
+    // Boolean om de sorteerorde bij te houden: true = A-Z, false = Z-A
+    boolean sortAscending = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             btnPickImage.setOnClickListener(view -> pickImage());
         }
 
-        // Kliklistener voor de sorteer-knop
+        // Kliklistener voor de sorteer-knop: togglet tussen A-Z en Z-A
         sortButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,14 +101,25 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // Sorteer de lijst met items op naam (alfabetisch) en update de RecyclerView
+    // Sorteert de lijst op basis van de huidige sorteerorde en togglet daarna de boolean
     private void sortGalleryModels() {
-        Collections.sort(galleryModels, new Comparator<gallerymodel>() {
-            @Override
-            public int compare(gallerymodel o1, gallerymodel o2) {
-                return o1.getNameOfDog().compareToIgnoreCase(o2.getNameOfDog());
-            }
-        });
+        if (sortAscending) {
+            Collections.sort(galleryModels, new Comparator<gallerymodel>() {
+                @Override
+                public int compare(gallerymodel o1, gallerymodel o2) {
+                    return o1.getNameOfDog().compareToIgnoreCase(o2.getNameOfDog());
+                }
+            });
+        } else {
+            Collections.sort(galleryModels, new Comparator<gallerymodel>() {
+                @Override
+                public int compare(gallerymodel o1, gallerymodel o2) {
+                    return o2.getNameOfDog().compareToIgnoreCase(o1.getNameOfDog());
+                }
+            });
+        }
+        // Toggle de sorteerorde voor de volgende keer
+        sortAscending = !sortAscending;
         adapter.notifyDataSetChanged();
     }
 

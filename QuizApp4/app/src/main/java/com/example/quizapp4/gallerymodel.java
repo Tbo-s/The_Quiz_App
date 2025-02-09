@@ -2,36 +2,37 @@ package com.example.quizapp4;
 
 import android.net.Uri;
 
-public class gallerymodel {
-    private String nameOfDog;
-    private int imageResource; // Voor vooraf gedefinieerde drawable resources
-    private Uri imageUri;      // Voor afbeeldingen die de gebruiker toevoegt
+import java.io.Serializable;
 
-    // Constructor voor vooraf gedefinieerde afbeeldingen (drawable resources)
+public class gallerymodel implements Serializable {
+    private String nameOfDog;
+    private int imageResource; // Niet-0 als het een drawable betreft
+    private String imageUriString; // Niet null als het een galerij-afbeelding betreft
+
+    // Constructor voor drawable resources
     public gallerymodel(String nameOfDog, int imageResource) {
         this.nameOfDog = nameOfDog;
         this.imageResource = imageResource;
-        this.imageUri = null;
+        this.imageUriString = null;
     }
 
-    // Constructor voor afbeeldingen uit de galerij (via URI)
+    // Constructor voor afbeeldingen uit de galerij
     public gallerymodel(String nameOfDog, Uri imageUri) {
         this.nameOfDog = nameOfDog;
-        this.imageUri = imageUri;
-        this.imageResource = 0; // Of een andere standaardwaarde
+        this.imageResource = 0; // Geen drawable resource
+        this.imageUriString = imageUri.toString();
     }
 
     public String getNameOfDog() {
         return nameOfDog;
     }
 
-    // Retourneert de drawable resource ID (gebruik dit wanneer imageUri == null)
     public int getImageResource() {
         return imageResource;
     }
 
-    // Retourneert de URI (gebruik dit wanneer niet-null)
+    // Retourneer de URI (of null als er geen URI is)
     public Uri getImageUri() {
-        return imageUri;
+        return (imageUriString != null) ? Uri.parse(imageUriString) : null;
     }
 }

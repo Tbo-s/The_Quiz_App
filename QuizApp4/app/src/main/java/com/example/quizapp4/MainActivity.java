@@ -31,14 +31,15 @@ import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Lijst met bestaande en toegevoegde items
+    // Lijst met bestaande en door de gebruiker toegevoegde items
     ArrayList<gallerymodel> galleryModels = new ArrayList<>();
 
     // Vooraf gedefinieerde drawable afbeeldingen
     int[] dogImages = {R.drawable.eagon, R.drawable.hank, R.drawable.lia};
 
     Button btnPickImage;
-    Button sortButton; // Knop om te sorteren
+    Button sortButton;
+    Button quizButton; // Knop om naar de quiz te gaan
     Dog_recyclerviewadapter adapter;
     ActivityResultLauncher<Intent> resultLauncher;
 
@@ -55,14 +56,16 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Vind de RecyclerView en de knoppen in de layout
         RecyclerView recyclerView = findViewById(R.id.rycyclerview);
         btnPickImage = findViewById(R.id.btnPickImage);
         sortButton = findViewById(R.id.Sortbutton);
+        quizButton = findViewById(R.id.Quizbutton);
 
-        // Voeg vooraf de standaard items toe
+        // Voeg de vooraf gedefinieerde items toe
         setUpgalleryModels();
 
-        // Maak de adapter aan en koppel hem aan de RecyclerView
+        // Maak en stel de adapter in
         adapter = new Dog_recyclerviewadapter(this, galleryModels);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -80,6 +83,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 sortGalleryModels();
+            }
+        });
+
+        // Kliklistener voor de quiz-knop: start QuizActivity en geef de volledige lijst mee
+        quizButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent quizIntent = new Intent(MainActivity.this, QuizActivity.class);
+                // De klasse gallerymodel moet Serializable implementeren!
+                quizIntent.putExtra("galleryList", galleryModels);
+                startActivity(quizIntent);
             }
         });
     }
@@ -101,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
         resultLauncher.launch(intent);
     }
 
+    // Voeg de vooraf gedefinieerde items toe aan de lijst
     private void setUpgalleryModels() {
         String[] dogNames = getResources().getStringArray(R.array.Dog_full_names);
         for (int i = 0; i < dogNames.length; i++) {
@@ -108,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Registreer de ActivityResultLauncher om het resultaat van de afbeeldingkeuze op te vangen
     private void registerResult() {
         resultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -125,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    // Laat een dialoog zien waarin de gebruiker een naam voor de foto kan ingeven
+    // Laat een dialoog zien waarin de gebruiker een naam kan ingeven voor de foto
     private void showNameDialog(Uri imageUri) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("Voer een naam in voor de foto");

@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">QuizApp4</string>
+
+
+    <string-array name="Dog_full_names">
+        <item>Eagon</item>
+        <item>Hank</item>
+        <item>Lia</item>
+    </string-array>
+
+
+</resources>

@@ -121,6 +121,7 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
+        textScore.setText(getString(R.string.quiz_score, answerCorrect, answerTotal, getString(R.string.quiz_score_init)));
         // Start the quiz
         hideBeforeAnswer();
         generateQuestion();

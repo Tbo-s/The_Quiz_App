@@ -7,6 +7,7 @@
     <string name="incorrect">Incorrect! the correct answer is: %1$s</string>
     <string name="quiz_end">End Quiz</string>
     <string name="next">Next</string>
+    <string name="quiz_score_init">start answering to get percentage</string>
 
 
     <string-array name="Dog_full_names">

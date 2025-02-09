@@ -116,6 +116,7 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(QuizActivity.this, MainActivity.class);
+                intent.putExtra("galleryList", images);
                 startActivity(intent);
                 finish();
             }
